@@ -1,6 +1,6 @@
 ## Is someone talking? TalkNet: Audio-visual active speaker detection Model
 
-This repository contains the code for our ACM MM 2021 paper (oral), TalkNet, an active speaker detection model to detect 'whether the face in the screen is speaking or not?'. [[Paper](https://arxiv.org/pdf/2107.06592.pdf)]    [[Video_English](https://youtu.be/C6bpAgI9zxE)]    [[Video_Chinese](https://www.bilibili.com/video/bv1Yw411d7HG)].
+This repository contains the code for our ACM MM 2021 paper (oral), TalkNet, an active speaker detection model to detect 'whether the face in the screen is speaking or not?'. [[Paper](https://arxiv.org/pdf/2107.06592.pdf)] [[Video_English](https://youtu.be/C6bpAgI9zxE)] [[Video_Chinese](https://www.bilibili.com/video/bv1Yw411d7HG)].
 
 ### Updates:
 
@@ -10,29 +10,51 @@ A new [demo page](https://www.sievedata.com/functions/sieve/talknet-asd). Thanks
 
 - [**Awesome ASD**](https://github.com/TaoRuijie/TalkNet_ASD/blob/main/awesomeASD.md): Papers about active speaker detection in last years.
 
-- **TalkNet in AVA-Activespeaker dataset**: The code to preprocess the AVA-ActiveSpeaker dataset, train TalkNet in AVA train set and evaluate it in AVA val/test set. 
+- **TalkNet in AVA-Activespeaker dataset**: The code to preprocess the AVA-ActiveSpeaker dataset, train TalkNet in AVA train set and evaluate it in AVA val/test set.
 
 - **TalkNet in TalkSet and Columbia ASD dataset**: The code to generate TalkSet, an ASD dataset in the wild, based on VoxCeleb2 and LRS3, train TalkNet in TalkSet and evaluate it in Columnbia ASD dataset.
 
-- **An ASD Demo with pretrained TalkNet model**: An end-to-end script to detect and mark the speaking face by the pretrained TalkNet model. 
+- **An ASD Demo with pretrained TalkNet model**: An end-to-end script to detect and mark the speaking face by the pretrained TalkNet model.
 
-***
+---
 
 ### Dependencies
 
-Start from building the environment
+TODO: Maybe another File where you descripe just the steps of the installation and the execution of the pretrained model without the training part, or just remove the content here and create your own version of the README.md.
+
+If you want to create a new environment, you can use the following script to install the dependencies.
+
+Install the specific Python version if you need
+
 ```
-conda create -n TalkNet python=3.7.9 anaconda
-conda activate TalkNet
+pyenv install 3.8
+```
+
+Create a new environment
+
+```
+pyenv virtualenv 3.8 TalkNet_ASD
+```
+
+Activate the environment
+
+```
+pyenv activate TalkNet_ASD
+```
+
+Install the dependencies
+
+```
 pip install -r requirement.txt
 ```
 
-Start from the existing environment
+If you want to start from a existing environment, you can use the following script to install the dependencies.
+
 ```
 pip install -r requirement.txt
 ```
 
-***
+---
 
 ## TalkNet in AVA-Activespeaker dataset
 
@@ -41,26 +63,32 @@ pip install -r requirement.txt
 The following script can be used to download and prepare the AVA dataset for training.
 
 ```
-python trainTalkNet.py --dataPathAVA AVADataPath --download 
+python trainTalkNet.py --dataPathAVA AVADataPath --download
 ```
 
 `AVADataPath` is the folder you want to save the AVA dataset and its preprocessing outputs, the details can be found in [here](https://github.com/TaoRuijie/TalkNet_ASD/blob/main/utils/tools.py#L34) . Please read them carefully.
 
 #### Training
+
 Then you can train TalkNet in AVA end-to-end by using:
+
 ```
 python trainTalkNet.py --dataPathAVA AVADataPath
 ```
+
 `exps/exps1/score.txt`: output score file, `exps/exp1/model/model_00xx.model`: trained model, `exps/exps1/val_res.csv`: prediction for val set.
 
 #### Pretrained model
-Our pretrained model performs `mAP: 92.3` in validation set, you can check it by using: 
+
+Our pretrained model performs `mAP: 92.3` in validation set, you can check it by using:
+
 ```
 python trainTalkNet.py --dataPathAVA AVADataPath --evaluation
 ```
-The pretrained model will automaticly be downloaded into `TalkNet_ASD/pretrain_AVA.model`. It performs `mAP: 90.8` in the testing set. 
 
-***
+The pretrained model will automaticly be downloaded into `TalkNet_ASD/pretrain_AVA.model`. It performs `mAP: 90.8` in the testing set.
+
+---
 
 ## TalkNet in TalkSet and Columbia ASD dataset
 
@@ -82,18 +110,19 @@ python demoTalkNet.py --evalCol --colSavePath colDataPath
 
 Also, Columnbia ASD dataset and the labels will be downloaded into `colDataPath`. Finally you can get the following F1 result.
 
-| Name |  Bell  |  Boll  |  Lieb  |  Long  |  Sick  |  Avg.  |
-|----- | ------ | ------ | ------ | ------ | ------ | ------ |
-|  F1  |  98.1  |  88.8  |  98.7  |  98.0  |  97.7  |  96.3  |
+| Name | Bell | Boll | Lieb | Long | Sick | Avg. |
+| ---- | ---- | ---- | ---- | ---- | ---- | ---- |
+| F1   | 98.1 | 88.8 | 98.7 | 98.0 | 97.7 | 96.3 |
 
 (This result is different from that in our paper because we train the model again, while the avg. F1 is very similar)
-***
+
+---
 
 ## An ASD Demo with pretrained TalkNet model
 
 #### Data preparation
 
-We build an end-to-end script to detect and extract the active speaker from the raw video by our pretrain model in TalkSet. 
+We build an end-to-end script to detect and extract the active speaker from the raw video by our pretrain model in TalkSet.
 
 You can put the raw video (`.mp4` and `.avi` are both fine) into the `demo` folder, such as `001.mp4`.
 
@@ -109,11 +138,12 @@ You can get the output video `demo/001/pyavi/video_out.avi`, which has marked th
 
 If you want to evaluate by using cpu only, you can modify `demoTalkNet.py` and `talkNet.py` file: modify all `cuda` into `cpu`. Then replace line 83 in talkNet.py into `loadedState = torch.load(path,map_location=torch.device('cpu'))`
 
-***
+---
 
 ### Citation
 
 Please cite the following if our paper or code is helpful to your research.
+
 ```
 @inproceedings{tao2021someone,
   title={Is Someone Speaking? Exploring Long-term Temporal Features for Audio-visual Active Speaker Detection},
@@ -123,6 +153,7 @@ Please cite the following if our paper or code is helpful to your research.
   year={2021}
 }
 ```
+
 I have summaried some potential [FAQs](https://github.com/TaoRuijie/TalkNet_ASD/blob/main/FAQ.md). You can also check the `issues` in Github for other questions that I have answered.
 
 This is my first open-source work, please let me know if I can future improve in this repositories or there is anything wrong in our work. Thanks for your support!
